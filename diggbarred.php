@@ -3,15 +3,19 @@
 Plugin Name: Diggbarred
 Author: Phil Nelson
 Author URI: http://extrafuture.com/
-Version: 1.6
+Version: 1.61
 Description: Blocks all traffic from Digg from viewing your content, replacing it with a message to users. Idea and DiggBar blocking regex taken  from <a href="http://daringfireball.net/2009/04/how_to_block_the_diggbar" title="Daring Fireball: How to Block the DiggBar">Daring Fireball</a>.
 Plugin URI: http://extrafuture.com/projects/diggbarred
 
 */
 
-add_option("diggbarred_version", "1.6");
+add_option("diggbarred_version", "1.61");
+update_option("diggbarred_version", "1.61");
 add_option("diggbarred_message", 'Dear Digg,<br> Your DiggBar sucks, and is <a href="http://daringfireball.net/2009/04/how_to_block_the_diggbar">harming the internet</a>. We\'re blocking it.');
 add_option("diggbarred_style","width: 30%; line-height: 17px; text-align: justify; margin: 20% auto 0 auto; font-family: verdana, sans-serif; font-size: 13px;");
+add_option('diggbarred_registered',"no");
+add_option('diggbarred_registered_on',"0");
+add_option("extra_future_site_id",md5(get_bloginfo('url')));
 
 add_action('init', 'diggbarred_do_the_shit');
 
@@ -56,6 +60,12 @@ function diggbarred_admin_panel()
 	if ( current_user_can('edit_posts') && function_exists('add_submenu_page') ) {
 		add_filter( 'plugin_action_links', 'diggbarred_plugin_actions', 10, 2 );
 	}
+}
+
+function diggbarred_register()
+{
+	update_option('diggbarred_registered', "yes");
+	update_option('diggbarred_registered_on', time());
 }
 
 if(is_admin()) 
